@@ -2,17 +2,20 @@ package main
 
 import (
 	"io/ioutil"
+	"os"
 	"net/http"
 )
 
 func main() {
 	handler := http.HandlerFunc(handleRequest)
-	http.Handle("/photo", handler)
+	http.Handle("/", handler)
 	http.ListenAndServe(":8080", nil)
+
 }
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
-	fileBytes, err := ioutil.ReadFile("fat_goat.png")
+	file := os.Args[1]
+	fileBytes, err := ioutil.ReadFile(file)
 	if err != nil {
 		panic(err)
 	}

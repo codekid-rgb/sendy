@@ -1,13 +1,23 @@
 package main
 
-import "fmt"
-import "net/http"
-
+import (
+	"io/ioutil"
+	"net/http"
+)
 
 func main() {
-http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
-    fmt.Fprint(w, "Welcome to my website!")
-})
+	handler := http.HandlerFunc(handleRequest)
+	http.Handle("/photo", handler)
+	http.ListenAndServe(":8080", nil)
+}
 
-http.ListenAndServe(":8080", nil)
+func handleRequest(w http.ResponseWriter, r *http.Request) {
+	fileBytes, err := ioutil.ReadFile("fat_goat.png")
+	if err != nil {
+		panic(err)
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/octet-stream")
+	w.Write(fileBytes)
+	return
 }

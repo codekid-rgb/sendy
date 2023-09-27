@@ -10,7 +10,7 @@ import (
 func main() {
 	handler := http.HandlerFunc(handleRequest)
 	http.Handle("/", handler)
-	fmt.Println("listening on :8080")
+	fmt.Println("listening for requests on :8080")
 	http.ListenAndServe(":8080", nil)
 
 }
